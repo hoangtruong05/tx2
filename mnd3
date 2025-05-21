@@ -74,7 +74,7 @@ Tro timnv(Tro L, char t[]){
 void htnv(Tro L){
 	char t[8];
 	cout<<"Nhap ten nv can tim: "<<endl;
-	cin>>t;
+	cin.getline(t,8);
 	Tro Q = timnv(L, t);
 	if(Q == NULL){
 		cout<<"Khong tim thay nv co ten tren"<<endl;
@@ -86,7 +86,7 @@ void htnv(Tro L){
 void xoanv(Tro &L){
 	char t[8]; 
 	cout<<"Nhap ten nv can tim: "<<endl;
-	cin>>t;Tro Q = timnv(L, t);
+	cin.getline(t,8);Tro Q = timnv(L, t);
 	if(Q == NULL){
 		cout<<"khong tim thay nv co ten tren"<<endl;
 	}
