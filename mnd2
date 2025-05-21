@@ -1,0 +1,159 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct monHoc{
+	int maMon;
+	char ten[16];
+	int soTin;
+};
+struct Node{
+	monHoc innfor;
+	Node *next;
+};
+typedef Node *Tro;
+void creat(Tro &L){
+	L = NULL;
+}
+int empty(Tro L){
+	return L == NULL;
+}
+void add(Tro &L, monHoc mh){
+	Tro Q = L;
+	Tro P = new Node;
+	P->innfor = mh;
+	P->next = NULL;
+	if(empty(L)) L=P;
+	else{
+		while(Q->next !=NULL){
+		Q=Q->next;
+	}
+	Q->next = P;
+	}
+}
+monHoc taomh(int maMon, char *ten, int soTin){
+	monHoc mh;
+	mh.maMon = maMon;
+	strcpy(mh.ten, ten);
+	mh.soTin = soTin;
+	return mh;
+}
+void display(monHoc mh){
+	cout<<fixed; 
+	cout<<setw(7)<<left<<mh.maMon;
+	cout<<setw(16)<<mh.ten;
+	cout<<setw(7)<<mh.soTin<<endl;
+}
+void taods(Tro &L){
+	add(L, taomh(101, "Giai tich", 3));
+	add(L, taomh(102, "Database", 4));
+	add(L, taomh(103, "Bong chuyen", 3));
+	add(L, taomh(104, "Lich su Dang", 2));
+	add(L, taomh(105, "PLDC", 2));
+}
+void htds(Tro L){
+	cout<<setw(7)<<left<<"Ma mon";
+	cout<<setw(16)<<"Ten mon";
+	cout<<setw(7)<<"So tin"<<endl;
+	Tro Q = L;
+	while(Q != NULL){
+		display(Q->innfor);
+	Q = Q->next;
+	}
+	cout<<"------------------------------------------"<<endl;
+}
+Tro timten(Tro &L, char t[]){
+	Tro Q = L;
+	while(Q != NULL){
+		if(strcmp(Q->innfor.ten, t)==0){
+			return Q;
+		}
+		Q= Q->next;
+	}
+	return NULL;
+}
+void httt(Tro L){
+	char t[16];
+	cout<<"Nhap ten mon hoc: "<<endl;
+	cin.getline(t, 16);
+	Tro Q = timten(L, t);
+	if(Q == NULL){
+		cout<<"Khong tim thay mon hoc co ten tren."<<endl;
+	}
+	else{
+		cout<<"Thong tin cua mon hoc vua nhap: "<<endl;
+		display(Q->innfor);
+	}
+	cout<<"------------------------------------------"<<endl;
+}
+void xoa(Tro &L){
+	char t[16];
+	cout<<"Nhap ten mon hoc can xoa:"<<endl;
+	cin.getline(t, 16);
+	if (L == NULL) {
+        cout << "Danh sach rong.\n";
+        return;
+    }
+
+    // xoa phan tu dau
+    if (strcmp(L->innfor.ten, t) == 0) {
+        Tro temp = L;
+        L = L->next;
+        delete temp;
+        cout << "Da xoa mon hoc o dau danh sach.\n";
+        return;
+    }
+	Tro P = L;
+    Tro Q = L->next;
+    while (Q != NULL && strcmp(Q->innfor.ten, t) != 0) {
+        P = Q;
+        Q = Q->next;
+    }
+
+    if (Q == NULL) {
+        cout << "Khong tim thay mon hoc can xoa.\n";
+        return;
+    }
+
+    P->next = Q->next;
+    delete Q;
+    cout << "Da xoa mon hoc.\n";
+}
+Tro search_k(Tro L, int k){
+	int d =1;
+	Tro Q = L;
+	while (d<k-1 && Q->next != NULL){
+		d++;
+		Q = Q->next;
+	}
+	if (d <k-1){//Danh sach co it hon k-1 phan tu
+		return NULL;
+	}
+	return Q;
+}
+void insert(Tro &L, Tro Q, monHoc mh ){
+	Tro P;
+	P = new Node;
+	P->innfor = mh;
+	P->next = Q->next;
+	Q->next = P;
+	return;
+}
+void chenVT_k(Tro &L, int k){
+	Tro Q = search_k(L, k);
+	if(Q ==NULL){
+		cout<<"Khong tim thay vtri chen"<<endl;
+	}
+	insert(L, Q, taomh(106, "Lap Trinh", 3));
+}
+
+int main(){
+	Tro L;
+	creat(L);
+	taods(L);
+	cout<<"=======Danh sach mon hoc vua tao======="<<endl; htds(L);
+	httt(L);
+	xoa(L);
+	cout<<"======Danh sach sau khi xoa======="<<endl; htds(L);
+	chenVT_k(L, 4);
+	cout<<"======Danh sach sau khi chen la======"<<endl; htds(L);
+}
