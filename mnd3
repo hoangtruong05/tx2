@@ -1,0 +1,136 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct nhanVien{
+	char hoDem[15];
+	char ten[8];
+	char gt[6];
+	int manv;
+	int heso;
+	
+};
+struct Node{
+	nhanVien innfor;
+	Node *next; 
+};
+typedef Node* Tro;
+void creat(Tro &L){
+	L = NULL;
+}
+int empty(Tro L){
+	return L==NULL;
+}
+nhanVien taonv(char hoDem[15], char ten[8], char gt[6], int manv, int heso){
+	nhanVien nv;
+	strcpy(nv.hoDem, hoDem);
+	strcpy(nv.ten, ten);
+	strcpy(nv.gt, gt);
+	nv.manv = manv;
+	nv.heso = heso;
+	return nv;
+}
+void display(nhanVien nv){
+	cout<<fixed;
+	cout<<setw(15)<<left<<nv.hoDem;
+	cout<<setw(8)<<nv.ten;
+	cout<<setw(6)<<nv.gt;
+	cout<<setw(5)<<nv.manv;
+	cout<<setw(4)<<nv.heso<<endl;
+}
+void add(Tro &L, nhanVien nv){
+	Tro Q = L, P = new Node;
+	P->innfor = nv;
+	P->next = NULL;
+	if(empty(L)) L = P;
+	else{
+	while(Q->next !=NULL)
+		Q=Q->next;
+	Q->next = P;
+	}	
+}
+void taods(Tro &L){
+	add(L, taonv("Hoang Van", "Truong", "Nam", 1001, 2));
+	add(L, taonv("Hoang Van", "Son", "Nam", 1002, 3));
+	add(L, taonv("Hoang Dinh", "Duy", "Nam", 1003, 1));
+}
+void htds(Tro L){
+	Tro Q=L;
+	while(Q!=NULL){
+		display(Q->innfor);
+	Q = Q->next;
+	}
+	cout<<"--------------------------------------"<<endl;
+}
+Tro timnv(Tro L, char t[]){
+	Tro Q = L;
+	while(Q != NULL){
+		if(strcmp(Q->innfor.ten, t)==0){
+			return Q;
+		}
+		
+	Q = Q->next;
+	}	
+		return NULL;
+}
+void htnv(Tro L){
+	char t[8];
+	cout<<"Nhap ten nv can tim: "<<endl;
+	cin>>t;
+	Tro Q = timnv(L, t);
+	if(Q == NULL){
+		cout<<"Khong tim thay nv co ten tren"<<endl;
+	}
+	else
+	cout<<"Nhan vien co ten vua nhap la: "<<endl;
+		display(Q->innfor);
+}
+void xoanv(Tro &L){
+	char t[8]; 
+	cout<<"Nhap ten nv can tim: "<<endl;
+	cin>>t;Tro Q = timnv(L, t);
+	if(Q == NULL){
+		cout<<"khong tim thay nv co ten tren"<<endl;
+	}
+	if(Q->next == NULL){
+		cout<<"Khong co nv nao sau nhan vien da tim"<<endl;
+	}
+	Tro tg = Q->next;
+	Q->next = tg->next;
+	delete tg;
+	cout<<"Da xoa nhan vien sau nv tim thay"<<endl;
+}
+void insert(Tro &L, nhanVien nv){
+	Tro P = new Node;
+	P->innfor = nv;
+	P->next = L->next;
+	L->next = P;
+}
+void firstadd(Tro &L){
+	insert(L, taonv("Nguyen Van","A", "Nam",1004, 4));
+}
+void sx(Tro L){
+	Tro P, M, Q;
+	P = L;
+	while(P->next != NULL){
+		M = P;
+		Q = P->next;
+		while(Q != NULL){
+			if(Q->innfor.heso<M->innfor.heso){
+				swap(Q->innfor, M->innfor);
+			}
+			Q = Q->next;
+		}
+			
+				P = P->next;
+	}
+}
+int main(){
+	Tro L; creat(L), taods(L);
+	cout<<"Danh sach vua tao: "<<endl; htds(L);
+	htnv(L);
+	xoanv(L);
+	cout<<"Danh sach nv sau khi xoa: "<<endl; htds(L);
+	firstadd(L);
+	cout<<"Danh sach sau khi chen: "<<endl; htds(L);
+	sx(L);
+	cout<<"Danh sach sau khi sap xep la: "<<endl; htds(L);
+}
