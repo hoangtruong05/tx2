@@ -1,0 +1,141 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 8
+
+struct sinhvien {
+	int stt;
+	char masv[7];
+	char hoDem[25];
+	char ten[10];
+	char gt[5];
+	int namsinh;
+	double diemTK;
+};
+
+struct List {
+	int count;
+	sinhvien e[MAX];
+};
+
+void create(List &L) {
+	L.count = -1;
+}
+
+int full(List L) {
+	return L.count == MAX - 1;
+}
+
+int add(List &L, sinhvien sv) {
+	if (full(L)) return 0;
+	else {
+		L.count++;
+		L.e[L.count] = sv;
+		return 1;
+	}
+}
+
+int empty(List L) {
+	return L.count == -1;
+}
+
+sinhvien taosv(int stt, const char *masv, const char *hd, const char *ten, const char *gt, int ns, double d) {
+	sinhvien sv;
+	sv.stt = stt;
+	strcpy(sv.masv, masv);
+	strcpy(sv.hoDem, hd);
+	strcpy(sv.ten, ten);
+	strcpy(sv.gt, gt);
+	sv.namsinh = ns;
+	sv.diemTK = d;
+	return sv;
+}
+
+void input(List &L) {
+	add(L, taosv(1, "SV1001", "Tran Van", "Thanh", "Nam", 1999, 7.5));
+	add(L, taosv(2, "SV1002", "Nguyen Thi", "Huong", "Nu", 2000, 7.3));
+	add(L, taosv(3, "SV1003", "Nguyen Van", "Binh", "Nam", 1998, 6.4));
+	add(L, taosv(4, "SV1004", "Bui Thi", "Hong", "Nu", 2000, 5.8));
+	add(L, taosv(5, "SV1005", "Duong Van", "Giang", "Nam", 1998, 8.3));
+}
+
+void htsv(sinhvien sv) {
+	cout << fixed;
+	cout << setw(3) << right << sv.stt << " ";
+	cout << setw(7) << left << sv.masv;
+	cout << setw(15) << left << sv.hoDem;
+	cout << setw(10) << left << sv.ten;
+	cout << setw(10) << left << sv.gt;
+	cout << setw(10) << right << sv.namsinh;
+	cout << setw(7) << setprecision(1) << sv.diemTK << endl;
+}
+
+void ht_ds_sv(List L) {
+	cout << setw(3) << left << "Stt";
+	cout << setw(7) << left << "MaSV";
+	cout << setw(15) << left << "Ho Dem";
+	cout << setw(10) << left << "Ten";
+	cout << setw(10) << left << "Gioi Tinh";
+	cout << setw(10) << left << "Nam Sinh";
+	cout << setw(7) << left << "DiemTK" << endl;
+	for (int i = 0; i <= L.count; i++) {
+		htsv(L.e[i]);
+	}
+}
+
+void xoaSvDauTien(List &L) {
+	if (empty(L)) {
+		cout << "\nDanh sach rong";
+		return;
+	}
+	for (int i = 1; i <= L.count; i++) {
+		L.e[i - 1] = L.e[i];
+	}
+	L.count--;
+}
+
+void chenVT3(List &L) {
+	if (L.count >= MAX - 1) {
+		cout << "Danh sach day, khong chen duoc!" << endl;
+		return;
+	}
+	sinhvien sv = taosv(6, "SV1006", "Le Thi", "Doan", "Nu", 1998, 7.6);
+	for (int i = L.count; i >= 2; i--)
+		L.e[i + 1] = L.e[i];
+	L.e[2] = sv;
+	L.count++;
+}
+
+void sx(List &L) {
+	for (int i = 0; i <= L.count; i++) {
+		int m = i;
+		for (int j = i + 1; j <= L.count; j++) {
+			if (strcmp(L.e[j].ten, L.e[m].ten) < 0) {
+				m = j;
+			}
+		}
+		swap(L.e[i], L.e[m]);
+	}
+}
+
+int main() {
+	List L;
+	create(L);
+	input(L);
+
+	cout << "============ Danh sach sinh vien ===========\n";
+	ht_ds_sv(L);
+
+	cout << "\n==== Sau khi xoa sinh vien dau tien ====\n";
+	xoaSvDauTien(L);
+	ht_ds_sv(L);
+
+	cout << "\n==== Sau khi chen sinh vien vao vi tri thu 3 ====\n";
+	chenVT3(L);
+	ht_ds_sv(L);
+
+	cout << "\n==== Danh sach sau khi sap xep theo ten ====\n";
+	sx(L);
+	ht_ds_sv(L);
+
+	return 0;
+}
