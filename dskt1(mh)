@@ -1,0 +1,117 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define MAX 6
+struct monHoc{
+	int maMon;
+	char ten[15];
+	int soTin;
+};
+
+struct List{
+	int count;
+	monHoc e[MAX];
+};
+void create(List &L){
+	 L.count = -1;
+}
+int full(List L){
+	return L.count == MAX-1;
+}
+int empty(List L){
+	return L.count == -1;
+}
+int add(List &L, monHoc mh){
+	if(full(L)) return 0;
+	else{
+		L.count++;
+		L.e[L.count] = mh;
+		return 1;
+	}
+}
+monHoc taomh(int maMon, char *ten, int soTin){
+	monHoc mh;
+	mh.maMon = maMon;
+	strcpy(mh.ten, ten);
+	mh.soTin = soTin;
+	return mh;
+}
+void input(List &L){
+	add(L, taomh(101, "Giai tich", 3));
+	add(L, taomh(102, "Database", 4));
+	add(L, taomh(103, "Mang may tinh", 3));
+	add(L, taomh(104, "Lich su Dang", 2));
+	add(L, taomh(105, "Bong chuyen", 1));
+}
+void htmh(monHoc mh){
+	cout<<fixed;
+	cout<<setw(7)<<left<<mh.maMon;
+	cout<<setw(16)<<mh.ten;
+	cout<<setw(7)<<mh.soTin<<endl;
+}
+void htds(List L){
+	cout<<setw(7)<<left<<"Ma mon";
+	cout<<setw(16)<<"Ten mon";
+	cout<<setw(7)<<"So tin"<<endl;
+	for(int i=0; i<=L.count; i++){
+		htmh(L.e[i]);
+	}
+	cout<<"---------------------------------------------"<<endl;
+}
+int timmh(List L, char t[]){
+	for(int i=0; i<=L.count; i++){
+		if(strcmp(L.e[i].ten, t)==0){
+			return i;
+		}
+	}
+	return -1;
+}
+void hienthi(List L){
+	char t[16];
+	cout<<"Nhap ten mon hoc can tim: "<<endl;
+	cin.getline(t, 16);
+	int x = timmh(L, t);
+	if(x ==-1){
+		cout<<"Khong tim thay mon hoc"<<endl;
+	}
+	else{
+		cout<<"Mon hoc co ten tren la: "<<endl;
+		htmh(L.e[x]);
+	}
+		
+}
+void xoa(List &L){
+	char t[16];
+	cout<<"Nhap ten mon hoc muon xoa: "<<endl;
+	cin.getline(t, 16);
+	int y = timmh(L, t);
+	if(y==-1){
+		cout<<"Khong tim thay mon hoc de xoa."<<endl;
+		
+	}
+		for(int i = y; i<L.count; i++){
+			L.e[i]=L.e[i+1];
+		}
+	L.count--;
+}
+void chenVT4(List &L){
+	if(full(L))	{
+		cout<<"Danh sach da day. "<<endl;
+	}
+	monHoc mh = taomh(106, "Tieng Anh", 5);
+	for(int i = L.count; i>=3; i--){
+			L.e[i+1] = L.e[i];
+		L.e[3]=mh;
+		L.count++;			
+		}
+}
+int main(){
+	List L;
+	create(L);
+	input(L);
+	cout<<"======Danh sach mon hoc vua tao====="<<endl; htds(L);
+	hienthi(L);
+	xoa(L);
+	cout<<"=====Danh sach mon hoc sau khi xoa====="<<endl; htds(L);
+	chenVT4(L);
+	cout<<"=====Danh sach sau khi chen la====="<<endl; htds(L);
+}
