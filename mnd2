@@ -93,30 +93,21 @@ void xoa(Tro &L){
         cout << "Danh sach rong.\n";
         return;
     }
-
-    // xoa phan tu dau
-    if (strcmp(L->innfor.ten, t) == 0) {
-        Tro temp = L;
-        L = L->next;
-        delete temp;
-        cout << "Da xoa mon hoc o dau danh sach.\n";
-        return;
-    }
+	
+    Tro Q = timten(L, t);
+    if(Q == NULL) cout<<"khong tim thay "<<endl;
+    if(Q ==L){
+    	L=L->next;
+    	delete Q;
+	}
 	Tro P = L;
-    Tro Q = L->next;
-    while (Q != NULL && strcmp(Q->innfor.ten, t) != 0) {
-        P = Q;
-        Q = Q->next;
-    }
-
-    if (Q == NULL) {
-        cout << "Khong tim thay mon hoc can xoa.\n";
-        return;
-    }
-
-    P->next = Q->next;
-    delete Q;
-    cout << "Da xoa mon hoc.\n";
+	while(P->next!=NULL && P->next!=Q){
+		P=P->next;
+	}
+	if(P == Q){
+		P->next = Q->next;
+		delete Q;
+	}
 }
 Tro search_k(Tro L, int k){
 	int d =1;
