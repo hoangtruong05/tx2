@@ -116,7 +116,18 @@ void sx(List &L) {
 		swap(L.e[i], L.e[m]);
 	}
 }
-
+int timMin(List L){
+	int min = L.e[0].diemTK;
+	for(int i =0; i<=L.count; i++){
+		if(L.e[i].diemTK < min){
+			return i;
+		}
+	}
+}
+void htMin(List L){
+	int min = timMin(L);
+	htsv(L.e[min]);
+}
 int main() {
 	List L;
 	create(L);
@@ -136,6 +147,9 @@ int main() {
 	cout << "\n==== Danh sach sau khi sap xep theo ten ====\n";
 	sx(L);
 	ht_ds_sv(L);
+	
+	cout<<"sinh vien co diem thap nhat: "<<endl;
+	htMin(L);
 
 	return 0;
 }
